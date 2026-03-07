@@ -4,6 +4,7 @@ using EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260307085608_AddUniqueIndexes")]
+    partial class AddUniqueIndexes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,29 +45,6 @@ namespace EFCore.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("EFCore.Entities.Passport", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId")
-                        .IsUnique();
-
-                    b.ToTable("Passport");
-                });
-
             modelBuilder.Entity("EFCore.Entities.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -73,18 +53,12 @@ namespace EFCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AttendanceForm")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Attendance");
-
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -107,12 +81,7 @@ namespace EFCore.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("Students", t =>
-                        {
-                            t.HasCheckConstraint("CK_AttendanceForms", "[Attendance] IN ('Hybrid', 'Offline', 'Online')");
-
-                            t.HasCheckConstraint("CK_Email_Pattern", "[Email] LIKE '%_@%_.%_'");
-                        });
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("EFCore.Entities.Subject", b =>
@@ -159,10 +128,7 @@ namespace EFCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teachers", t =>
-                        {
-                            t.HasCheckConstraint("CK_Salary_MoreThenZero", "[Salary] > 0");
-                        });
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("SubjectTeacher", b =>
@@ -178,17 +144,6 @@ namespace EFCore.Migrations
                     b.HasIndex("TeacersId");
 
                     b.ToTable("SubjectTeacher");
-                });
-
-            modelBuilder.Entity("EFCore.Entities.Passport", b =>
-                {
-                    b.HasOne("EFCore.Entities.Student", "Student")
-                        .WithOne("Passport")
-                        .HasForeignKey("EFCore.Entities.Passport", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("EFCore.Entities.Student", b =>
@@ -220,12 +175,6 @@ namespace EFCore.Migrations
             modelBuilder.Entity("EFCore.Entities.Group", b =>
                 {
                     b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("EFCore.Entities.Student", b =>
-                {
-                    b.Navigation("Passport")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

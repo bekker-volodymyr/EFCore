@@ -4,6 +4,7 @@ using EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260307092418_OneToOneStudentPassport")]
+    partial class OneToOneStudentPassport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,16 +78,14 @@ namespace EFCore.Migrations
 
                     b.Property<string>("AttendanceForm")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Attendance");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -109,7 +110,7 @@ namespace EFCore.Migrations
 
                     b.ToTable("Students", t =>
                         {
-                            t.HasCheckConstraint("CK_AttendanceForms", "[Attendance] IN ('Hybrid', 'Offline', 'Online')");
+                            t.HasCheckConstraint("CK_AttendanceForms", "[AttendanceForm] IN ('Hybrid', 'Offline', 'Online')");
 
                             t.HasCheckConstraint("CK_Email_Pattern", "[Email] LIKE '%_@%_.%_'");
                         });
