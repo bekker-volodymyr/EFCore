@@ -13,6 +13,7 @@ namespace EFCore.Entities
         public string LastName { get; set; } = null!;
 
         public decimal Salary { get; set; }
+        public DateTime BirthDate { get; set; }
 
         public List<Subject> Subjects { get; set; } = null!;
 

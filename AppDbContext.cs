@@ -9,10 +9,14 @@ namespace EFCore
         //private readonly string _connectionString = "Data Source=EfCore.db";
         private readonly string _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=EfCore;";
 
+        // Tables
         public DbSet<Student> Students { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Subject> Subjects { get; set; }
+        
+        // Views
+        public DbSet<StudentGroup> StudentsGroups { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -25,6 +29,8 @@ namespace EFCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<StudentGroup>().ToView("vw_StudentsGroups").HasNoKey();
 
             //modelBuilder.Entity<Student>().Property(s => s.Scholarship).HasColumnType("money");
             modelBuilder.Entity<Teacher>(b =>

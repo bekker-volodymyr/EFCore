@@ -4,6 +4,7 @@ using EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260308073836_AddStudentsGroupsView")]
+    partial class AddStudentsGroupsView
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,7 +81,7 @@ namespace EFCore.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Attendance");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -159,9 +162,6 @@ namespace EFCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -188,12 +188,12 @@ namespace EFCore.Migrations
                     b.Property<int>("SubjectsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeachersId")
+                    b.Property<int>("TeacersId")
                         .HasColumnType("int");
 
-                    b.HasKey("SubjectsId", "TeachersId");
+                    b.HasKey("SubjectsId", "TeacersId");
 
-                    b.HasIndex("TeachersId");
+                    b.HasIndex("TeacersId");
 
                     b.ToTable("SubjectTeacher");
                 });
@@ -230,7 +230,7 @@ namespace EFCore.Migrations
 
                     b.HasOne("EFCore.Entities.Teacher", null)
                         .WithMany()
-                        .HasForeignKey("TeachersId")
+                        .HasForeignKey("TeacersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

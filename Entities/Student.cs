@@ -19,7 +19,7 @@ namespace EFCore.Entities
         [MaxLength(100)]
         public string Email { get; set; } = null!;
         public decimal? Scholarship { get; set; }
-        public DateTime Birthday { get; set; }
+        public DateTime BirthDate { get; set; }
         [Column("Attendance")]
         public AttendanceForm AttendanceForm { get; set; }
 
@@ -31,7 +31,7 @@ namespace EFCore.Entities
 
         public override string ToString()
         {
-            return $"{Id}. {FirstName} {LastName} {Email} {Birthday:d} -- {Group.Name}";
+            return $"{Id}. {FirstName} {LastName} {Email} {BirthDate:d} -- {Group.Name}";
         }
     }
 }
